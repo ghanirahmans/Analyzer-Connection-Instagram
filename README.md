@@ -32,7 +32,7 @@ First, you need to request your data from Instagram. To get only the necessary f
 5.  Choose your profile and click **Next**.
 6.  Select the **"Select types of information"** option.
 7.  Scroll down and check the box for **"Followers and following"** ONLY. This is important for a small, quick download.
-8.  Set the format to **JSON** and media quality to **Low** (it doesn't matter for this data).
+8.  Set the format to **JSON** and media quality to **Medium**.
 9.  Click **Submit request**.
 
 Instagram will notify you via email when your data is ready to download.
@@ -42,7 +42,7 @@ Instagram will notify you via email when your data is ready to download.
 1.  Download and unzip the file from Instagram.
 2.  Inside the extracted folder, navigate to the `followers_and_following` directory.
 3.  You will find `followers_1.json` and `following.json`. Copy both of these files.
-4.  Paste them into the root directory of this project (`Check-Connection-Instagram2/`).
+4.  Paste them into the root directory of this project (`Analyzer-Connection-Instagram/`).
 
 > **Note:** If your followers file is named differently (e.g., `followers_2.json`), you must update the `FOLLOWERS_FILE` constant at the top of the `index.js` file.
 
@@ -77,11 +77,12 @@ Make sure in the directory have Instagram data by following `following.json` dan
 
 ### 4. Format Folder
 
-**Analyzer-Connection-Instagram/**
-- `index.js`
-- `followers_1.json`
-- `following.json`
+`Analyzer-Connection-Instagram`
+├── `index.js`
+├── `followers_1.json`
+└── `following.json`
 
+For automatic detection, simply place the `connections` folder from Instagram into the `Analyzer-Connection-Instagram` folder, and the script will find `followers_1.json` and `following.json` automatically
 ---
 
 ## Example Output
