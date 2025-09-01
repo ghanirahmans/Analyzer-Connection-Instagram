@@ -77,11 +77,12 @@ Make sure in the directory have Instagram data by following `following.json` dan
 
 ### 4. Format Folder
 
-Analyzer-Connection-Instagram/
-|--index.js
-|--followers_1.json
-|--following.json
+**Analyzer-Connection-Instagram/**
+- `index.js`
+- `followers_1.json`
+- `following.json`
 
+---
 
 ## Example Output
 
