@@ -77,13 +77,14 @@ Make sure in the directory have Instagram data by following `following.json` dan
 
 ### 4. Format Folder
 
-`Analyzer-Connection-Instagram`
-├── `index.js`
-├── `followers_1.json`
-└── `following.json`
-
+```
+Analyzer-Connection-Instagram
+├── index.js
+├── followers_1.json
+├── following.json
+└── README.md  
+```
 For automatic detection, simply place the `connections` folder from Instagram into the `Analyzer-Connection-Instagram` folder, and the script will find `followers_1.json` and `following.json` automatically
----
 
 ## Example Output
 
