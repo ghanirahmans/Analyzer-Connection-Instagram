@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDownAZ,
   ArrowUpAZ,
@@ -11,6 +11,7 @@ import {
   Github,
   HeartHandshake,
   CircleHelp,
+  Loader2,
   RotateCcw,
   Search,
   ShieldCheck,
@@ -149,6 +150,10 @@ function App() {
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [copied, setCopied] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [loadingFiles, setLoadingFiles] = useState({
+    followers: false,
+    following: false,
+  });
   const followersInputRef = useRef(null);
   const followingInputRef = useRef(null);
 
@@ -178,10 +183,26 @@ function App() {
     ? Math.round((analysis.mutuals.length / analysis.following.length) * 100)
     : 0;
 
+  useEffect(() => {
+    function closeOnEscape(event) {
+      if (event.key === "Escape") {
+        setIsGuideOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
+
   async function handleFile(type, file) {
     if (!file) return;
 
     try {
+      setLoadingFiles((current) => ({ ...current, [type]: true }));
+      setStatus({
+        type: "idle",
+        message: `Memproses ${FILE_TYPES[type].filename}...`,
+      });
       const content = await readFileAsText(file);
       const usernames = parseInstagramUsernames(content, type);
 
@@ -200,6 +221,8 @@ function App() {
         type: "error",
         message: `${FILE_TYPES[type].filename} gagal diproses. ${error.message}`,
       });
+    } finally {
+      setLoadingFiles((current) => ({ ...current, [type]: false }));
     }
   }
 
@@ -275,17 +298,23 @@ function App() {
 
   return (
     <main className="app-shell">
+      <a className="skip-link" href="#results">
+        Lewati ke hasil
+      </a>
       <section className="workspace">
-        <header className="topbar">
-          <div>
+        <section className="hero" aria-labelledby="page-title">
+          <div className="hero-copy">
             <p className="eyebrow">Instagram Connection Analyzer</p>
-            <h1>Analisis followers dan following dari file JSON Instagram.</h1>
+            <h1 id="page-title">
+              Analisis followers dan following dari file JSON Instagram.
+            </h1>
           </div>
-          <div className="topbar-actions">
+          <div className="hero-actions" aria-label="Aksi cepat">
             <button
               type="button"
               className="help-button"
               onClick={() => setIsGuideOpen(true)}
+              aria-label="Buka panduan mendapatkan file JSON Instagram"
             >
               <CircleHelp size={18} />
               Cara dapat JSON
@@ -300,11 +329,12 @@ function App() {
               GitHub
             </a>
           </div>
-        </header>
+        </section>
 
         {isLocalDev && (
           <section
             className="data-folder-bar"
+            id="local-data"
             aria-label="Muat dari folder data"
           >
             <div>
@@ -321,7 +351,11 @@ function App() {
           </section>
         )}
 
-        <section className="privacy-bar" aria-label="Privasi data">
+        <section
+          className="privacy-bar"
+          id="privacy"
+          aria-label="Privasi data"
+        >
           <ShieldCheck size={22} />
           <div>
             <strong>Data diproses lokal di browser</strong>
@@ -332,12 +366,17 @@ function App() {
           </div>
         </section>
 
-        <section className="upload-grid" aria-label="Upload file Instagram">
+        <section
+          className="upload-grid"
+          id="upload"
+          aria-label="Upload file Instagram"
+        >
           <FileDrop
             refInput={followersInputRef}
             type="followers"
             file={files.followers}
             count={data.followers.length}
+            isLoading={loadingFiles.followers}
             onFile={handleFile}
             onDrop={handleDrop}
           />
@@ -346,6 +385,7 @@ function App() {
             type="following"
             file={files.following}
             count={data.following.length}
+            isLoading={loadingFiles.following}
             onFile={handleFile}
             onDrop={handleDrop}
           />
@@ -358,7 +398,11 @@ function App() {
           </div>
         )}
 
-        <section className="summary-grid" aria-label="Ringkasan analisis">
+        <section
+          className="summary-grid"
+          id="summary"
+          aria-label="Ringkasan analisis"
+        >
           <Metric
             icon={Users}
             label="Followers"
@@ -406,7 +450,11 @@ function App() {
           </p>
         </section>
 
-        <section className="results-panel" aria-label="Hasil analisis">
+        <section
+          className="results-panel"
+          id="results"
+          aria-label="Hasil analisis"
+        >
           <div className="panel-head">
             <div>
               <span className="section-kicker">Hasil</span>
@@ -420,6 +468,7 @@ function App() {
                   setSortDirection(sortDirection === "asc" ? "desc" : "asc")
                 }
                 title="Ubah urutan"
+                aria-label="Ubah urutan hasil"
               >
                 {sortDirection === "asc" ? (
                   <ArrowDownAZ size={18} />
@@ -433,6 +482,7 @@ function App() {
                 onClick={copyResult}
                 disabled={!filteredResult.length}
                 title="Salin hasil"
+                aria-label="Salin hasil"
               >
                 {copied ? <Check size={18} /> : <Clipboard size={18} />}
               </button>
@@ -442,6 +492,7 @@ function App() {
                 onClick={exportResult}
                 disabled={!filteredResult.length}
                 title="Download CSV"
+                aria-label="Download hasil sebagai CSV"
               >
                 <Download size={18} />
               </button>
@@ -450,6 +501,7 @@ function App() {
                 className="icon-button danger"
                 onClick={resetAll}
                 title="Reset"
+                aria-label="Reset semua data"
               >
                 <RotateCcw size={18} />
               </button>
@@ -532,6 +584,7 @@ function GuideModal({ onClose }) {
             className="icon-button"
             onClick={onClose}
             title="Tutup"
+            aria-label="Tutup panduan"
           >
             <X size={18} />
           </button>
@@ -565,17 +618,22 @@ function GuideModal({ onClose }) {
   );
 }
 
-function FileDrop({ refInput, type, file, count, onFile, onDrop }) {
+function FileDrop({ refInput, type, file, count, isLoading, onFile, onDrop }) {
   const config = FILE_TYPES[type];
   const Icon = config.icon;
+  const inputId = `${type}-upload`;
 
   return (
     <label
       className="drop-zone"
+      htmlFor={inputId}
       onDragOver={(event) => event.preventDefault()}
       onDrop={(event) => onDrop(event, type)}
+      aria-busy={isLoading}
     >
       <input
+        id={inputId}
+        className="sr-only"
         ref={refInput}
         type="file"
         accept=".json,application/json"
@@ -589,7 +647,11 @@ function FileDrop({ refInput, type, file, count, onFile, onDrop }) {
         <small>{file ? file.name : config.filename}</small>
       </span>
       <span className="drop-action">
-        {count ? (
+        {isLoading ? (
+          <>
+            <Loader2 size={16} /> Memproses
+          </>
+        ) : count ? (
           `${count.toLocaleString("id-ID")} akun`
         ) : (
           <>
