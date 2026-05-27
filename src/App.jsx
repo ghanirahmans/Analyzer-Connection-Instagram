@@ -10,6 +10,7 @@ import {
   FolderOpen,
   Github,
   HeartHandshake,
+  CircleHelp,
   RotateCcw,
   Search,
   ShieldCheck,
@@ -59,7 +60,9 @@ function extractUsername(item) {
     (entry) => entry?.value,
   )?.value;
 
-  return stringListUsername || item?.title || item?.value || item?.username || null;
+  return (
+    stringListUsername || item?.title || item?.value || item?.username || null
+  );
 }
 
 function uniqueSortedUsernames(values) {
@@ -145,6 +148,7 @@ function App() {
   const [sortDirection, setSortDirection] = useState("asc");
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [copied, setCopied] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
   const followersInputRef = useRef(null);
   const followingInputRef = useRef(null);
 
@@ -277,15 +281,25 @@ function App() {
             <p className="eyebrow">Instagram Connection Analyzer</p>
             <h1>Analisis followers dan following dari file JSON Instagram.</h1>
           </div>
-          <a
-            className="github-link"
-            href="https://github.com/ghanirahmans/Analyzer-Connection-Instagram"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Github size={18} />
-            GitHub
-          </a>
+          <div className="topbar-actions">
+            <button
+              type="button"
+              className="help-button"
+              onClick={() => setIsGuideOpen(true)}
+            >
+              <CircleHelp size={18} />
+              Cara dapat JSON
+            </button>
+            <a
+              className="github-link"
+              href="https://github.com/ghanirahmans/Analyzer-Connection-Instagram"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Github size={18} />
+              GitHub
+            </a>
+          </div>
         </header>
 
         {isLocalDev && (
@@ -488,11 +502,66 @@ function App() {
         </section>
 
         <footer className="app-footer">
-          Program ini dibuat dan dikembangkan oleh{" "}
-          <strong>ghanirahmans</strong> untuk keperluan portofolio.
+          Program ini dibuat dan dikembangkan oleh <strong>ghanirahmans</strong>{" "}
+          untuk keperluan portofolio.
         </footer>
       </section>
+
+      {isGuideOpen && <GuideModal onClose={() => setIsGuideOpen(false)} />}
     </main>
+  );
+}
+
+function GuideModal({ onClose }) {
+  return (
+    <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
+      <section
+        className="guide-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="guide-title"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className="modal-head">
+          <div>
+            <span className="section-kicker">Panduan data Instagram</span>
+            <h2 id="guide-title">Cara mendapatkan file JSON</h2>
+          </div>
+          <button
+            type="button"
+            className="icon-button"
+            onClick={onClose}
+            title="Tutup"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <ol className="guide-steps">
+          <li>Buka Instagram, lalu masuk ke Settings and privacy.</li>
+          <li>Pilih Accounts Center.</li>
+          <li>Buka Your information and permissions.</li>
+          <li>Pilih Download your information.</li>
+          <li>Buat request download untuk akun Instagram yang ingin dicek.</li>
+          <li>Pilih Select types of information.</li>
+          <li>Centang Followers and following saja.</li>
+          <li>Pastikan format download adalah JSON, lalu submit request.</li>
+          <li>Setelah file ZIP siap, download dan ekstrak.</li>
+          <li>
+            Cari folder followers_and_following, lalu gunakan followers_1.json
+            dan following.json di aplikasi ini.
+          </li>
+        </ol>
+
+        <div className="modal-note">
+          <ShieldCheck size={18} />
+          <p>
+            File dipilih dari browser user dan diproses lokal. Aplikasi tidak
+            mengupload file JSON ke server.
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }
 

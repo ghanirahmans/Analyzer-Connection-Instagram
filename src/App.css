@@ -115,6 +115,33 @@ h2 {
   white-space: nowrap;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.help-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(108, 119, 137, 0.18);
+  border-radius: 8px;
+  background: #17352f;
+  color: #ffffff;
+  box-shadow: 0 16px 42px rgba(41, 51, 68, 0.08);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.help-button:hover {
+  background: #214a42;
+}
+
 .data-folder-bar {
   display: flex;
   align-items: center;
@@ -538,6 +565,67 @@ h2 {
   line-height: 1.5;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(15, 23, 42, 0.48);
+}
+
+.guide-modal {
+  width: min(680px, 100%);
+  max-height: min(760px, calc(100vh - 36px));
+  overflow: auto;
+  border: 1px solid rgba(108, 119, 137, 0.2);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.28);
+  padding: 20px;
+}
+
+.modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.guide-steps {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0 0;
+  padding-left: 22px;
+  color: #344054;
+  line-height: 1.5;
+}
+
+.guide-steps li::marker {
+  color: #0f766e;
+  font-weight: 850;
+}
+
+.modal-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 13px 14px;
+  border-radius: 8px;
+  background: #ecfdf5;
+  color: #17685f;
+}
+
+.modal-note svg {
+  flex: 0 0 auto;
+}
+
+.modal-note p {
+  line-height: 1.5;
+}
+
 .app-footer {
   margin-top: 18px;
   color: #687385;
@@ -564,6 +652,7 @@ h2 {
     flex-direction: column;
   }
 
+  .topbar-actions,
   .github-link,
   .actions {
     width: max-content;
@@ -610,6 +699,17 @@ h2 {
     align-items: stretch;
     flex-direction: column;
     overflow: visible;
+  }
+
+  .topbar-actions {
+    align-items: stretch;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .github-link,
+  .help-button {
+    width: 100%;
   }
 
   .tab {
