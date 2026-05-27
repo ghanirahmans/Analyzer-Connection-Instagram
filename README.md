@@ -1,96 +1,150 @@
 # Instagram Connection Analyzer
 
-A simple Node.js script to analyze your Instagram `followers` and `following` data. It helps you quickly identify mutual connections, users who don't follow you back, and fans you aren't following back.
+Aplikasi React untuk menganalisis data `followers` dan `following` dari export Instagram. UI ini membantu melihat akun mutual, akun yang tidak follow back, dan akun yang belum Anda follow balik tanpa perlu mengunggah data ke server lain.
 
-## Features
+Untuk versi publik/deploy, data JSON dipilih langsung oleh user melalui file picker dan diproses lokal di browser.
 
--   **Mutual Followers**: See a list of users who you follow and who also follow you back.
--   **Not Following You Back**: Identify accounts you follow that do not follow you in return.
--   **You Don't Follow Back**: Find accounts that follow you, but you don't follow back.
--   **Zero Dependencies**: Runs with a standard Node.js installation, no `npm install` needed.
--   **Simple & Fast**: Directly parses the JSON files from your official Instagram data export.
+## Fitur
 
----
+- **Upload interaktif** untuk `followers_1.json` dan `following.json`.
+- **Ringkasan jumlah akun** untuk followers, following, mutual, dan tidak follow back.
+- **Tab hasil** untuk berpindah kategori analisis.
+- **Pencarian username** di setiap kategori.
+- **Urutkan A-Z / Z-A**.
+- **Copy hasil** ke clipboard.
+- **Export CSV** untuk daftar yang sedang tampil.
+- **Baca dari folder data saat local dev** melalui tombol **Muat dari data/**. Tombol ini tidak muncul di production build.
+- **Mode CLI tetap tersedia** melalui `npm run cli` atau `node index.js`.
 
-## Prerequisites
+## Prasyarat
 
--   Node.js (version 14.x or newer is recommended).
--   Your Instagram data archive (specifically the `followers_1.json` and `following.json` files).
+- Node.js 20.x atau lebih baru.
+- File data Instagram:
+  - `followers_1.json`
+  - `following.json`
 
----
+## Cara Mendapatkan Data Instagram
 
-## Setup and Usage
+1. Buka Instagram.
+2. Masuk ke **Settings and privacy**.
+3. Pilih **Accounts Center**.
+4. Pilih **Your information and permissions**.
+5. Pilih **Download your information**.
+6. Buat request download untuk akun Instagram Anda.
+7. Pilih **Select types of information**.
+8. Centang hanya **Followers and following**.
+9. Pilih format **JSON**.
+10. Submit request dan tunggu file dari Instagram tersedia.
 
-### 1. Download Your Instagram Data
+Setelah file ZIP diunduh, ekstrak lalu cari folder `followers_and_following`. Di dalamnya biasanya ada `followers_1.json` dan `following.json`.
 
-First, you need to request your data from Instagram. To get only the necessary files and speed up the process, follow these steps carefully:
+## Menyiapkan Folder Data
 
-1.  Go to your Instagram profile on the web or in the app.
-2.  Navigate to **Settings and privacy** > **Accounts Center**.
-3.  Select **Your information and permissions** > **Download your information**.
-4.  Click **Request a download**.
-5.  Choose your profile and click **Next**.
-6.  Select the **"Select types of information"** option.
-7.  Scroll down and check the box for **"Followers and following"** ONLY. This is important for a small, quick download.
-8.  Set the format to **JSON** and media quality to **Medium**.
-9.  Click **Submit request**.
+Simpan file Instagram di folder `data/`:
 
-Instagram will notify you via email when your data is ready to download.
-
-### 2. Prepare the Files
-
-1.  Download and unzip the file from Instagram.
-2.  Inside the extracted folder, navigate to the `followers_and_following` directory.
-3.  You will find `followers_1.json` and `following.json`. Copy both of these files.
-4.  Paste them into the root directory of this project (`Analyzer-Connection-Instagram/`).
-
-> **Note:** If your followers file is named differently (e.g., `followers_2.json`), you must update the `FOLLOWERS_FILE` constant at the top of the `index.js` file.
-
-### 3. Run the Script
-
-Download source code from github:
-
-1. Download source code from github with zip.
-2. Unzip.
-3. Run script with command.
-```bash
-node index.js
-```
-
-or you can download source code from terminal or command prompt:
-
-1. download source code with git clone
-```bash
-git clone https://github.com/ghanirahmans/Analyzer-Connection-Instagram.git
-```
-
-2. and then change directory to Analyzer-Connection-Instagram
-```bash
-cd Analyzer-Connection-Instagram
-```
-3. run script with command
-```bash
-node index.js
-```
-
-Make sure in the directory have Instagram data by following `following.json` dan `followers_1.json`.
-
-### 4. Format Folder
-
-```
+```text
 Analyzer-Connection-Instagram
+├── data
+│   ├── followers_1.json
+│   └── following.json
 ├── index.js
-├── followers_1.json
-├── following.json
-└── README.md  
+├── index.html
+├── package.json
+├── README.md
+└── src
 ```
-For automatic detection, simply place the `connections` folder from Instagram into the `Analyzer-Connection-Instagram` folder, and the script will find `followers_1.json` and `following.json` automatically
 
-## Example Output
+File `.json` di folder `data/` sudah di-ignore oleh Git agar data pribadi tidak ikut commit.
 
-The script will print the categorized lists directly to your console, along with a count for each category.
+## Menjalankan UI React
 
+Clone atau download project ini, lalu jalankan:
+
+```bash
+npm install
+npm run dev
 ```
+
+Buka URL yang muncul di terminal, biasanya:
+
+```text
+http://localhost:5173
+```
+
+Di halaman aplikasi saat local dev:
+
+1. Klik **Muat dari data/** untuk membaca `data/followers_1.json` dan `data/following.json`.
+2. Jika tidak memakai folder `data/`, pilih file manual pada panel **Followers** dan **Following**.
+3. Lihat hasil pada tab **Tidak Follow Back**, **Belum Anda Follow**, dan **Mutual**.
+4. Gunakan pencarian, tombol urutkan, copy, atau download CSV sesuai kebutuhan.
+
+Saat aplikasi sudah dideploy, user cukup memilih file manual pada panel **Followers** dan **Following**. File diproses di browser user dan tidak diupload ke Vercel.
+
+## Build Production
+
+Untuk membuat build static:
+
+```bash
+npm run build
+```
+
+Untuk mengecek hasil build:
+
+```bash
+npm run preview
+```
+
+## Deploy ke Vercel
+
+Project ini bisa dideploy ke Vercel karena UI React dibuild sebagai static site.
+
+Pengaturan Vercel:
+
+```text
+Framework Preset: Vite
+Build Command: npm run build
+Output Directory: dist
+Install Command: npm install
+```
+
+Untuk deployment publik, jangan deploy file Instagram pribadi. Biarkan user memilih file lewat browser dengan upload manual.
+
+Mode production tidak menampilkan tombol **Muat dari data/**, sehingga aplikasi tidak mencoba membaca file JSON dari server Vercel.
+
+## Menjalankan Mode CLI
+
+Mode CLI lama masih tersedia. Letakkan `followers_1.json` dan `following.json` di folder `data/`, lalu jalankan:
+
+```bash
+npm run cli
+```
+
+atau:
+
+```bash
+node index.js
+```
+
+Struktur file yang dibaca CLI:
+
+```text
+Analyzer-Connection-Instagram
+├── data
+│   ├── followers_1.json
+│   └── following.json
+├── index.js
+├── index.html
+├── package.json
+├── README.md
+├── src
+│   ├── App.css
+│   ├── App.jsx
+│   └── main.jsx
+```
+
+## Contoh Output CLI
+
+```text
 [INFO] Successfully loaded 82 Followers from followers_1.json.
 [INFO] Successfully loaded 76 Following from following.json.
 
@@ -99,18 +153,25 @@ The script will print the categorized lists directly to your console, along with
 Mutual Followers (55):
 - username_1
 - username_2
-...
 
 Who is not following you back (21):
 - username99
 - username98
-...
 
 Who you don't follow back (27):
 - username73
 - username72
-...
 ```
+
+## Catatan Privasi
+
+UI React memproses file JSON di browser menggunakan `FileReader`. File user tidak diupload ke Vercel, tidak dikirim ke backend, dan tidak disimpan oleh aplikasi.
+
+Aplikasi ini tidak memiliki API upload. Selama tidak ditambahkan backend baru yang menerima file, data user tetap berada di device/browser mereka.
+
+## Credit
+
+Program ini dibuat dan dikembangkan oleh **ghanirahmans** untuk keperluan portofolio.
 
 ## License
 
