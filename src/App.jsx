@@ -309,6 +309,11 @@ function App() {
             <h1 id="page-title">
               Analisis followers dan following dari file JSON Instagram.
             </h1>
+            <p className="hero-summary">
+              Cek siapa yang tidak follow back, mutual followers, followers, dan
+              following secara lokal. Find Instagram unfollowers and mutuals
+              from JSON files without uploading your data.
+            </p>
           </div>
           <div className="hero-actions" aria-label="Aksi cepat">
             <button

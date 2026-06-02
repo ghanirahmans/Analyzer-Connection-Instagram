@@ -94,6 +94,31 @@ Untuk mengecek hasil build:
 npm run preview
 ```
 
+## SEO dan Sitemap
+
+Project menyertakan `public/sitemap.xml` dan `public/robots.txt`.
+Keduanya dibuat otomatis sebelum build melalui:
+
+```bash
+npm run seo
+```
+
+Default URL production:
+
+```text
+https://instalyze.ghaniyyirrahmans.me
+```
+
+Jika domain berubah, jalankan:
+
+```bash
+SITE_URL=https://domain-baru.example npm run seo
+```
+
+Karena aplikasi ini single-page app tanpa route publik lain, sitemap valid hanya berisi halaman utama `/`. Section seperti `#upload`, `#summary`, dan `#results` tidak dimasukkan karena fragment URL tidak dianggap halaman terpisah oleh sitemap search engine.
+
+SEO halaman utama memakai copy bilingual Indonesia-Inggris agar bisa menjangkau pencarian seperti "cek tidak follow back Instagram", "Instagram unfollowers", "who doesn't follow me back", dan "mutual followers".
+
 ## Deploy ke Vercel
 
 Project ini bisa dideploy ke Vercel karena UI React dibuild sebagai static site.

@@ -164,6 +164,14 @@ input:focus-visible,
   max-width: 50rem;
 }
 
+.hero-summary {
+  max-width: 44rem;
+  margin-top: var(--space-3);
+  color: var(--color-muted);
+  font-size: clamp(1rem, 0.94rem + 0.25vw, 1.12rem);
+  line-height: 1.6;
+}
+
 .eyebrow,
 .section-kicker {
   display: block;

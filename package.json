@@ -6,6 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "seo": "node scripts/generate-sitemap.cjs",
+    "prebuild": "node scripts/generate-sitemap.cjs",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "cli": "node index.js"
