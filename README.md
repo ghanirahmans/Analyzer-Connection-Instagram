@@ -115,7 +115,13 @@ Jika domain berubah, jalankan:
 SITE_URL=https://domain-baru.example npm run seo
 ```
 
-Karena aplikasi ini single-page app tanpa route publik lain, sitemap valid hanya berisi halaman utama `/`. Section seperti `#upload`, `#summary`, dan `#results` tidak dimasukkan karena fragment URL tidak dianggap halaman terpisah oleh sitemap search engine.
+Sitemap memuat halaman utama dan halaman panduan SEO:
+
+- `/`
+- `/cara-download-data-instagram/`
+- `/how-to-download-instagram-data/`
+
+Section seperti `#upload`, `#summary`, dan `#results` tidak dimasukkan karena fragment URL tidak dianggap halaman terpisah oleh sitemap search engine.
 
 SEO halaman utama memakai copy bilingual Indonesia-Inggris agar bisa menjangkau pencarian seperti "cek tidak follow back Instagram", "Instagram unfollowers", "who doesn't follow me back", dan "mutual followers".
 

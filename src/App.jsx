@@ -327,6 +327,13 @@ function App() {
             </button>
             <a
               className="github-link"
+              href="/cara-download-data-instagram/"
+            >
+              <FileJson size={18} />
+              Panduan data
+            </a>
+            <a
+              className="github-link"
               href="https://github.com/ghanirahmans/Analyzer-Connection-Instagram"
               target="_blank"
               rel="noreferrer"

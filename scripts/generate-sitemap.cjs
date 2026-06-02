@@ -12,6 +12,16 @@ const routes = [
     changefreq: 'monthly',
     priority: '1.0',
   },
+  {
+    path: '/cara-download-data-instagram/',
+    changefreq: 'monthly',
+    priority: '0.8',
+  },
+  {
+    path: '/how-to-download-instagram-data/',
+    changefreq: 'monthly',
+    priority: '0.8',
+  },
 ];
 
 function escapeXml(value) {
