@@ -23,8 +23,9 @@ function extractUsername(user) {
 }
 
 function uniqueSortedUsernames(usernames) {
-  return [...new Set(usernames.filter(Boolean))]
-    .map(username => String(username).trim())
+  return [
+    ...new Set(usernames.map(username => String(username ?? '').trim().toLowerCase())),
+  ]
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b));
 }
@@ -91,7 +92,7 @@ function displayUsernames(usernames) {
  * @param {string[]} following - An array of usernames you are following.
  * @returns {string[]} An array of usernames that are in both lists.
  */
-function getmMutualFollowers(followers, following) {
+function getMutualFollowers(followers, following) {
   // Convert the 'following' array to a Set for efficient O(1) lookups.
   const followingSet = new Set(following);
   // Filter the 'followers' list to find users who are also in the 'followingSet'.
@@ -133,10 +134,17 @@ function main() {
   // 1. Load usernames from the respective JSON files.
   const followers = getUsernamesFromFile(FOLLOWERS_FILE);
   const following = getUsernamesFromFile(FOLLOWING_FILE);
+
+  if (!followers.length || !following.length) {
+    console.error('\n[ERROR] Analysis stopped because one or both data files are missing, invalid, or contain no usernames.');
+    process.exitCode = 1;
+    return;
+  }
+
   console.log('\n--- Results ---');
 
   // 2. Calculate and display mutual followers.
-  const mutuals = getmMutualFollowers(followers, following);
+  const mutuals = getMutualFollowers(followers, following);
   console.log(`\nMutual Followers (${mutuals.length}):`);
   displayUsernames(mutuals);
 

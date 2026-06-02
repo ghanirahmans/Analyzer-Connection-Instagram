@@ -67,8 +67,9 @@ function extractUsername(item) {
 }
 
 function uniqueSortedUsernames(values) {
-  return [...new Set(values.filter(Boolean))]
-    .map((name) => String(name).trim())
+  return [
+    ...new Set(values.map((name) => String(name ?? "").trim().toLowerCase())),
+  ]
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b));
 }
